@@ -1,2 +1,2 @@
 run:
-	python -m base.py
+	python -m base

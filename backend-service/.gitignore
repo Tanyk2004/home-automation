@@ -1,3 +1,6 @@
+# Virtual Environment
+home-auto/
+
 # Byte-compiled / optimized Python files
 __pycache__/
 *.py[cod]
