@@ -1,5 +1,6 @@
 from core import app
+import json
 
 @app.route('/')
 def index():
-    return 'Hello World!!!'
+    return json.loads('{"message": "Hello World!"}')

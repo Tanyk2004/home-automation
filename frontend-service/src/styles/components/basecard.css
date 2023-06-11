@@ -1,0 +1,55 @@
+:root {
+  --card-background-color: #ffffffd4;
+}
+
+.baseCardContainer {
+  display: flex;
+  height: 30em;
+  width: 30em;
+  flex-direction: column;
+  border-radius: 2em;
+  box-shadow: 3px 2px 10px 5px rgba(0, 0, 0, 0.2);
+  background-color: var(--card-background-color);
+  backdrop-filter: blur(3px);
+}
+
+
+.cardTitle {
+  margin: 1em;
+  text-align: center;
+  font-size: 2.5em;
+}
+
+.cardButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.cardButton {
+  margin: 0 1em;
+  padding: 2em 5em;
+  border-radius: 1em;
+}
+
+.cardButton:hover {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#onButton {
+    border: 0.1em solid #8ced8c;
+}
+
+#onButton:hover {
+    background-color: #8ced8c;
+}
+
+#offButton {
+    border: 0.1em solid #ff7878;
+}
+
+#offButton:hover {
+    background-color: #ff7878;
+}
