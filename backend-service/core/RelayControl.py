@@ -20,8 +20,13 @@ class Relay:
         GPIO.setup(self.relay_id, GPIO.OUT)
         GPIO.output(self.relay_id, GPIO.LOW)
 
-   
 
+    def getId(self) -> int:
+        """
+        Returns the id of the relay
+        """
+        return self.id
+   
     def getRelayState(self) -> bool:
         """
         :return: The state of the relay (True or False)
@@ -56,10 +61,43 @@ class RelayStateControl:
     def initializeLow(self):
         for relay in self.relayContainer:
             relay.setRelayState(False)
+    
+    
+    def getRelay ( self, index : int) -> Relay:
+        """
+        :param index : int -> The index of the relay we want to get
+        """
+        return self.relayContainer[index]
+    
+    def getRelay ( self, id : int) -> Relay:
+        """
+        :return -> the relay with the passed in id
+        """
+        for relay in self.relayContainer:
+            if ( relay.getId() == id):
+                return relay
+
+    def removeRelay ( self, id: int) -> Relay:
+        """
+        :param id : int -> Id of the relay that needs to be popped
+        :returns -> the popped relay object
+        """
+        for relay, index in self.relayContainer, range(len(self.relayContainer)):
+            if ( relay.getId() == id):
+                poppedRelay: Relay = relay
+                self.relayContainer.pop(index)
+                return poppedRelay
+
+    def popRelay (self, index : int) -> Relay:
+        """
+        :param index : int -> index of the relay that we want to remove
+        :returns -> the popped relay object
+        """
+        return self.relayContainer.pop(index)
 
 
 if __name__ == "__main__":
     rsc = RelayStateControl()
     rsc.addRelay(4, False)
-    rsc.initializeLow(4, False)
+    rsc.initializeLow()
 
