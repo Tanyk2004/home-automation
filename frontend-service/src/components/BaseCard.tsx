@@ -8,6 +8,8 @@ interface BaseCardProps {
     title: string;
     status?: boolean;
     applicaneId?: string;
+    // todo: add applianceId based on which we can make api calls and get and put the status
+
 }
 
 const ON_COLOR = '#31FF3166'

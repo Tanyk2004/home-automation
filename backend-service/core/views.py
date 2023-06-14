@@ -6,7 +6,7 @@ import json
 def index():
     return jsonify({"message": "Home Automation API is Running!"}), 200
 
-
+# TODO - if you want to embed a video stream on to the page as well try this https://chat.openai.com/share/e2f71f0e-06d5-45ca-8aa1-6070cd6fbe8f
 # TODO - create a get based api endpoint for getting the relay state
 
 # we want to use this to update the relay state

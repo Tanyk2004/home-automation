@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 function Homepage() {
   const backendURL = 'http://localhost:5000'
   useEffect(() => {
-    console.log(backendURL)
     // fetch(`${backendURL}/`)
     //   .then( res => res.json())
     //   .then( data => console.log(data["message"]))
