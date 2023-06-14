@@ -37,23 +37,21 @@ class Relay:
 
 
 class RelayStateControl:
-    def __init__(self):
+    def __init__(self, relayContainer: list = None, relay: Relay = None):
         self.relayContainer = []
+        if relayContainer is not None:
+            self.relayContainer = relayContainer
+        if relay is not None:
+            self.relayContainer.append(relay)
 
-    def __init__(self, relayContainer: list):
-        self.relayContainer = relayContainer
-
-    def __init__(self, relay: Relay):
-        self.relayContainer = [relay]
-
-    def addRelay(self, relay: Relay):
+    def addRelay(self, id: int, is_on: bool):
         """
         Adds a new relay to the container, and due to the nested class in the file,
         the relay is automatically set to low
 
         :param relay: The relay object to be added to the container
         """
-        self.relayContainer.append(relay)
+        self.relayContainer.append(Relay(id, is_on))
 
     def initializeLow(self):
         for relay in self.relayContainer:
@@ -62,6 +60,6 @@ class RelayStateControl:
 
 if __name__ == "__main__":
     rsc = RelayStateControl()
-    rsc.addRelay(Relay(4, False))
-    rsc.initializeLow()
-    
+    rsc.addRelay(4, False)
+    rsc.initializeLow(4, False)
+
