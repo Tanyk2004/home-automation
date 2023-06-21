@@ -5,21 +5,27 @@ from time import sleep
 class Relay:
 
     """
-    @param relay_id: The GPIO pin number
-    @param is_on: The state of the relay
-
-    initializes the relay object, and sets the
-    output of the actual relay to low
+    A class used to represent a relay. These functions are used to control the 
+    state of each relay. The relay is initialized to low, and the state can be 
+    changed by calling the setRelayState function. The state can be retrieved
+    by calling the getRelayState function.
     """
 
+
     def __init__(self, relay_id: int, is_on: bool):
+        """
+        @param relay_id: The GPIO pin number
+        @param is_on: The state of the relay
+
+        initializes the relay object, and sets the
+        output of the actual relay to low
+        """
         self.relay_id = relay_id
         self.is_on = is_on
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self.relay_id, GPIO.OUT)
         GPIO.output(self.relay_id, GPIO.LOW)
-
 
     def getId(self) -> int:
         """
@@ -71,27 +77,27 @@ class RelayStateControl:
         :param index : int -> The index of the relay we want to get
         """
         return self.relayContainer[index]
-    
-    def getRelay ( self, id : int) -> Relay:
+
+    def getRelay(self, id: int) -> Relay:
         """
         :return -> the relay with the passed in id
         """
         for relay in self.relayContainer:
-            if ( relay.getId() == id):
+            if relay.getId() == id:
                 return relay
 
-    def removeRelay ( self, id: int) -> Relay:
+    def removeRelay(self, id: int) -> Relay:
         """
         :param id : int -> Id of the relay that needs to be popped
         :returns -> the popped relay object
         """
         for relay, index in self.relayContainer, range(len(self.relayContainer)):
-            if ( relay.getId() == id):
+            if relay.getId() == id:
                 poppedRelay: Relay = relay
                 self.relayContainer.pop(index)
                 return poppedRelay
 
-    def popRelay (self, index : int) -> Relay:
+    def popRelay(self, index: int) -> Relay:
         """
         :param index : int -> index of the relay that we want to remove
         :returns -> the popped relay object
@@ -103,4 +109,3 @@ if __name__ == "__main__":
     rsc = RelayStateControl()
     rsc.addRelay(4, False)
     rsc.initializeLow()
-
