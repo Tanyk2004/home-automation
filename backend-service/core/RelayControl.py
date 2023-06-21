@@ -25,7 +25,7 @@ class Relay:
         """
         Returns the id of the relay
         """
-        return self.id
+        return self.relay_id
    
     def getRelayState(self) -> bool:
         """
@@ -38,7 +38,7 @@ class Relay:
         :param is_on: The state of the relay (True or False)
         """
         self.is_on = is_on
-        GPIO.output(self.relay_id, (GPIO.LOW if self.is_on else GPIO.HIGH))
+        GPIO.output(self.relay_id, (GPIO.HIGH if self.is_on else GPIO.LOW))
 
 
 class RelayStateControl:
@@ -66,7 +66,7 @@ class RelayStateControl:
             relay.setRelayState(False)
     
     
-    def getRelay ( self, index : int) -> Relay:
+    def getRelayIndex ( self, index : int) -> Relay:
         """
         :param index : int -> The index of the relay we want to get
         """
