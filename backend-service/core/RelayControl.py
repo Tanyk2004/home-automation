@@ -59,6 +59,9 @@ class RelayStateControl:
         self.relayContainer.append(Relay(id, is_on))
 
     def initializeLow(self):
+        """
+        Sets all the relays in the container to LOW
+        """
         for relay in self.relayContainer:
             relay.setRelayState(False)
     
