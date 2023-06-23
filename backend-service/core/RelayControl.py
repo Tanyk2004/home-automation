@@ -48,6 +48,12 @@ class Relay:
 
 
 class RelayStateControl:
+
+    """
+    A container class for different various objects that can be used to abstract 
+    handling multiple relays and the GPIO operations that need to be done with them.
+    """
+
     def __init__(self, relayContainer: list = None, relay: Relay = None):
         self.relayContainer = []
         if relayContainer is not None:
