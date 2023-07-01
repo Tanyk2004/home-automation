@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
-
+from core.db.model import dbManager
 
 class Relay:
 
@@ -54,39 +54,54 @@ class RelayStateControl:
     handling multiple relays and the GPIO operations that need to be done with them.
     """
 
-    def __init__(self, relayContainer: list = None, relay: Relay = None):
+    def __init__(self):
         self.relayContainer = []
-        if relayContainer is not None:
-            self.relayContainer = relayContainer
-        if relay is not None:
-            self.relayContainer.append(relay)
+        self.db = dbManager()
+        for relay in self.db.getAllRelays():
+            self.relayContainer.append(Relay(relay[0], relay[1]))
+    
+    def __str__(self) -> str:
+        """
+        Prints the list of relays in the container
+        """
+        output = ""
+        for relay in self.relayContainer:
+            output.join(f"Relay {relay.getId()} is {relay.getRelayState()}")
 
     def addRelay(self, id: int, is_on: bool):
         """
         Adds a new relay to the container, and due to the nested class in the file,
         the relay is automatically set to low
-
-        :param relay: The relay object to be added to the container
+        Args:
+            :param id: The relay id
+            :param is_on: The state of the relay
         """
         self.relayContainer.append(Relay(id, is_on))
+        if not self.db.checkIfRelayExists(id):
+            self.db.addRelay(id, is_on)
 
     def initializeLow(self):
         """
         Sets all the relays in the container to LOW
         """
         for relay in self.relayContainer:
+            self.db.updateRelayState(relay.getId(), False)
             relay.setRelayState(False)
     
     
     def getRelayIndex ( self, index : int) -> Relay:
         """
-        :param index : int -> The index of the relay we want to get
+        Args:
+            :param index : int -> The index of the relay we want to get
         """
         return self.relayContainer[index]
 
     def getRelay(self, id: int) -> Relay:
         """
-        :return -> the relay with the passed in id
+        Args:
+            :param id : int -> The id of the relay we want to get
+        Return:
+            :return -> the relay with the passed in id
         """
         for relay in self.relayContainer:
             if relay.getId() == id:
@@ -94,24 +109,34 @@ class RelayStateControl:
 
     def removeRelay(self, id: int) -> Relay:
         """
-        :param id : int -> Id of the relay that needs to be popped
-        :returns -> the popped relay object
+
+        Removes a relay with the passed in id from the container as well as the database
+
+        Args:
+            :param id : int -> Id of the relay that needs to be popped
+        Return:
+            :returns -> the popped relay object
         """
         for relay, index in self.relayContainer, range(len(self.relayContainer)):
             if relay.getId() == id:
                 poppedRelay: Relay = relay
+                self.db.removeRelay(id)
                 self.relayContainer.pop(index)
                 return poppedRelay
 
     def popRelay(self, index: int) -> Relay:
         """
-        :param index : int -> index of the relay that we want to remove
-        :returns -> the popped relay object
+        Args:
+            :param index : int -> index of the relay that we want to remove
+        Return:
+            :returns -> the popped relay object
         """
-        return self.relayContainer.pop(index)
+
+        poppedRelay: Relay = self.relayContainer.pop(index)
+        self.db.removeRelay(poppedRelay.getId())
+        return poppedRelay
 
 
 if __name__ == "__main__":
     rsc = RelayStateControl()
-    rsc.addRelay(4, False)
-    rsc.initializeLow()
+    print(rsc)

@@ -73,6 +73,32 @@ class dbManager:
         self.c.execute(f"DELETE FROM {dbManager.TABLE_NAME} where id={id}")
         return True
 
+    def updateRelayState(self, id: int, state: bool) -> bool:
+        """
+        Updates the state of the relay with the passed in id
+
+        Args:
+            :param id of the relay
+            :param state of the relay
+        Return:
+            :return True if the relay was successfully updated
+        Raises:
+            ValueError: If a relay with the id doesn't exist
+        """
+        if not (self.checkIfRelayExists(id)):
+            raise ValueError(f"Relay with the ID {id} doesn't exist in the database.")
+        self.c.execute(f"UPDATE {dbManager.TABLE_NAME} SET state={state} WHERE id={id}")
+        return True
+    
+    def getAllRelays(self) -> list:
+        """
+        Returns all the relays in the database
+
+        Return:
+            :return list of all the relays in the database
+        """
+        self.c.execute(f"SELECT * FROM {dbManager.TABLE_NAME}")
+        return self.c.fetchall()
 
 
 if __name__ == "__main__":
@@ -84,10 +110,10 @@ if __name__ == "__main__":
     # cursor.execute(f"PRAGMA table_info({dbManager.TABLE_NAME})")
     # cursor.execute("select * from relays_record")
     # m.addRelay(4, False)
-    # m.addRelay(5, False)
+    # m.updateRelayState(5, True)
     # m.addRelay(1, False)
     # print(m.getRelayState(4))
-    m.dropRelay(4)
+    m.dropRelay(5)
     cursor.execute("select * from relays_record")
     tables = cursor.fetchall()
     print("******* OUTPUT *******")
