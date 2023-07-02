@@ -26,7 +26,8 @@ def index():
 @app.route("/relay", methods=["PUT"])
 def relay():
     data = request.get_json()
-    r = self.rsc.getRelay(data["relayNumber"])
+    rsc = RelayStateControl()
+    r = rsc.getRelay(data["relayNumber"])
     r.setRelayState(data["relayState"])
     return jsonify({"updatedRelayState": (data["relayState"])}), 200
 
@@ -35,6 +36,8 @@ def relay():
 @app.route("/relay", methods=["GET"])
 def getRelay():
     data = request.get_json()
+    headers = request.headers
+    # TODO for testing try to print the relay control object here using a postman get request and send data using headers
     relayNumber = data["relayNumber"]
     db = dbManager()
     state = db.getRelayState(relayNumber)
