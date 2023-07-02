@@ -1,7 +1,5 @@
-import React from 'react'
 import { useState, useEffect } from 'react'
 import '../styles/components/basecard.css'
-import { stat } from 'fs';
 
 
 interface BaseCardProps {
@@ -20,8 +18,6 @@ function BaseCard(props: BaseCardProps) {
     const [cardColor, setCardColor] = useState('#ffffffd4')
 
     useEffect(() => {
-
-        
 
         setStatus(props.status || false)
         if ( status ) {
