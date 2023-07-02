@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import '../styles/components/basecard.css'
-
+import backendURL from '../config';
 
 interface BaseCardProps {
     title: string;
@@ -41,10 +41,49 @@ function BaseCard(props: BaseCardProps) {
     const handleOn = () => {
         setStatus(true)
         setCardColor(ON_COLOR)
+
+        fetch( `${backendURL}/relay/update` , {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              relayNumber: '4',
+              relayState: true
+            })
+          })
+          .then ( res => res.json())
+          .then ( data => {
+            if(data["success"] == true) {console.log(data["updatedRelayState"])}
+            
+        })
+
+
+
+
     }
     const handleOff = () => {
         setStatus(false)
         setCardColor('#ffffff')
+
+        
+        fetch( `${backendURL}/relay/update` , {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              relayNumber: '4',
+              relayState: false
+            })
+          })
+          .then ( res => res.json())
+          .then ( data => {
+            if(data["success"] == true) {console.log(data["updatedRelayState"])}
+            
+        })
+
+          
     }
 
 

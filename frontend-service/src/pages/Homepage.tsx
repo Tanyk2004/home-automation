@@ -10,19 +10,19 @@ function Homepage() {
     //   .then( data => console.log(data["message"]))
 
 
-    fetch( `${backendURL}/relay` , {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        relayNumber: '1'
-      },
-      body: JSON.stringify({
-        relayNumber: '10',
-        relayState: 0
-      })
-    })
-    .then ( res => res.json())
-    .then ( data => console.log(data["updatedRelayState"]))
+    // fetch( `${backendURL}/relay` , {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     relayNumber: '1'
+    //   },
+    //   body: JSON.stringify({
+    //     relayNumber: '10',
+    //     relayState: 0
+    //   })
+    // })
+    // .then ( res => res.json())
+    // .then ( data => console.log(data["updatedRelayState"]))
   }, [])
 
   return (
