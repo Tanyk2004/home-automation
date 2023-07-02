@@ -25,7 +25,7 @@ class Relay:
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self.relay_id, GPIO.OUT)
-        GPIO.output(self.relay_id, GPIO.LOW)
+        GPIO.output(self.relay_id, GPIO.HIGH if is_on else GPIO.LOW)
 
     def getId(self) -> int:
         """
@@ -57,6 +57,7 @@ class RelayStateControl:
     def __init__(self):
         self.relayContainer = []
         self.db = dbManager()
+        
         for relay in self.db.getAllRelays():
             self.relayContainer.append(Relay(relay[0], relay[1]))
     
@@ -66,19 +67,26 @@ class RelayStateControl:
         """
         output = ""
         for relay in self.relayContainer:
-            output.join(f"Relay {relay.getId()} is {relay.getRelayState()}")
+            # print(f"Relay {relay.getId()} is {relay.getRelayState()}")
+            output += "\n" + f"Relay {relay.getId()} is {'On' if relay.getRelayState() == 1 else 'Off'}"
+        return output
 
-    def addRelay(self, id: int, is_on: bool):
+    def addRelay(self, id: int, is_on: bool) -> bool:
         """
         Adds a new relay to the container, and due to the nested class in the file,
         the relay is automatically set to low
         Args:
             :param id: The relay id
             :param is_on: The state of the relay
+        Return:
+            :returns true if the relay was successfully added
         """
-        self.relayContainer.append(Relay(id, is_on))
+        newRelay = Relay(id, is_on)
+        self.relayContainer.append(newRelay)
         if not self.db.checkIfRelayExists(id):
             self.db.addRelay(id, is_on)
+            return True
+        return False
 
     def initializeLow(self):
         """
@@ -117,11 +125,14 @@ class RelayStateControl:
         Return:
             :returns -> the popped relay object
         """
-        for relay, index in self.relayContainer, range(len(self.relayContainer)):
+        if not self.db.checkIfRelayExists(id):
+            return None
+        for relay, index in zip(self.relayContainer, range(len(self.relayContainer))):
             if relay.getId() == id:
                 poppedRelay: Relay = relay
-                self.db.removeRelay(id)
+                self.db.dropRelay(id)
                 self.relayContainer.pop(index)
+                poppedRelay.setRelayState(False)
                 return poppedRelay
 
     def popRelay(self, index: int) -> Relay:
@@ -135,6 +146,13 @@ class RelayStateControl:
         poppedRelay: Relay = self.relayContainer.pop(index)
         self.db.removeRelay(poppedRelay.getId())
         return poppedRelay
+    
+    def getAllRelays(self) -> list:
+        """
+        Return:
+            :returns a list of all the relays that are connected
+        """
+        return self.db.getAllRelays()
 
 
 if __name__ == "__main__":

@@ -8,7 +8,7 @@ class dbManager:
     def __init__(self):
         self.con = sqlite3.connect("relays.db")
         self.c = self.con.cursor()
-        print("database running")
+        # self.c.execute(f"CREATE TABLE {dbManager.TABLE_NAME} (id INTEGER PRIMARY KEY, state bool);")
 
     def checkIfRelayExists(self, id : int) -> bool:
         """
@@ -71,6 +71,7 @@ class dbManager:
         if not (self.checkIfRelayExists(id)):
             return False
         self.c.execute(f"DELETE FROM {dbManager.TABLE_NAME} where id={id}")
+        self.con.commit()
         return True
 
     def updateRelayState(self, id: int, state: bool) -> bool:
@@ -88,6 +89,7 @@ class dbManager:
         if not (self.checkIfRelayExists(id)):
             raise ValueError(f"Relay with the ID {id} doesn't exist in the database.")
         self.c.execute(f"UPDATE {dbManager.TABLE_NAME} SET state={state} WHERE id={id}")
+        self.con.commit()
         return True
     
     def getAllRelays(self) -> list:
@@ -101,24 +103,24 @@ class dbManager:
         return self.c.fetchall()
 
 
-if __name__ == "__main__":
-    m = dbManager()
-    cursor = m.c
-    # cursor.execute(f"CREATE TABLE {dbManager.TABLE_NAME} (id INTEGER PRIMARY KEY, state bool);")
-    # cursor.execute("SELECT * FROM sqlite_master WHERE type='table';")
-    # cursor.execute("INSERT INTO relays_record VALUES (4 , FALSE)")
-    # cursor.execute(f"PRAGMA table_info({dbManager.TABLE_NAME})")
-    # cursor.execute("select * from relays_record")
-    # m.addRelay(4, False)
-    # m.updateRelayState(5, True)
-    # m.addRelay(1, False)
-    # print(m.getRelayState(4))
-    m.dropRelay(5)
-    cursor.execute("select * from relays_record")
-    tables = cursor.fetchall()
-    print("******* OUTPUT *******")
-    for i in tables:
-        print(i)
-    m.con.commit()
-    cursor.close()
+# if __name__ == "__main__":
+#     m = dbManager()
+#     cursor = m.c
+#     # cursor.execute(f"CREATE TABLE {dbManager.TABLE_NAME} (id INTEGER PRIMARY KEY, state bool);")
+#     # cursor.execute("SELECT * FROM sqlite_master WHERE type='table';")
+#     # cursor.execute("INSERT INTO relays_record VALUES (4 , FALSE)")
+#     # cursor.execute(f"PRAGMA table_info({dbManager.TABLE_NAME})")
+#     # cursor.execute("select * from relays_record")
+#     # m.addRelay(4, False)
+#     # m.updateRelayState(5, True)
+#     # m.addRelay(1, False)
+#     # print(m.getRelayState(4))
+#     m.dropRelay(4)
+#     cursor.execute("select * from relays_record")
+#     tables = cursor.fetchall()
+#     print("******* OUTPUT *******")
+#     for i in tables:
+#         print(i)
+#     m.con.commit()
+#     cursor.close()
 

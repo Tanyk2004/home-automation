@@ -16,29 +16,45 @@ def index():
 
 
 # TODO - if you want to embed a video stream on to the page as well try this https://chat.openai.com/share/e2f71f0e-06d5-45ca-8aa1-6070cd6fbe8f
-# TODO - create a get based api endpoint for getting the relay state
-# we want to use this to update the relay state
-# TODO - Now connect this to the GPIO code in a different class based on relay ID's
-# This function modifies the relay state
-# TODO - make an endpoint that returns all the relay ids that are stored in the relay state control array
-# TODO - make a local database file so that the availabe relays are maintained acrosss sessions and for all users 
 
-@app.route("/relay", methods=["PUT"])
+
+# This function modifies the relay state
+@app.route("/relay/update", methods=["PUT"])
 def relay():
     data = request.get_json()
     rsc = RelayStateControl()
     r = rsc.getRelay(data["relayNumber"])
     r.setRelayState(data["relayState"])
-    return jsonify({"updatedRelayState": (data["relayState"])}), 200
+    return jsonify({"updatedRelayState": (data["relayState"]), "success" : True}), 200
 
 
 # This function returns the relay state
-@app.route("/relay", methods=["GET"])
+@app.route("/relay/all", methods=["GET"])
 def getRelay():
+    rsc = RelayStateControl()
+    relayList : list = rsc.getAllRelays()
+    return jsonify({"relayState": relayList, "success" : True}), 200
+
+# This function creates a new relay and adds it to the database
+@app.route("/relay/create", methods=["POST"])
+def addRelay():
     data = request.get_json()
-    headers = request.headers
-    # TODO for testing try to print the relay control object here using a postman get request and send data using headers
-    relayNumber = data["relayNumber"]
-    db = dbManager()
-    state = db.getRelayState(relayNumber)
-    return jsonify({"relayState": state}), 200
+    rsc = RelayStateControl()
+    success = rsc.addRelay(data["relayNumber"], data["relayState"])
+    if success:
+        return jsonify({"message" : "Relay successfully created" , "success" : True}), 201
+    else:
+        return jsonify({"message" : "Relay already exists" , "success" : False}), 200
+
+@app.route("/relay/delete", methods=["PUT"])
+def deleteRelay():
+    data = request.get_json()
+    rsc = RelayStateControl()
+    removedRelay = rsc.removeRelay(data["relayNumber"])
+    
+    if removedRelay == None:
+        return jsonify({"message" : "Relay doesn't exist" , "success" : False}), 200
+    return jsonify({"message" : "Relay Deleted successfully" , "success" : True}), 200
+
+
+
