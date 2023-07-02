@@ -19,13 +19,26 @@ def index():
 
 
 # This function modifies the relay state
-@app.route("/relay/update", methods=["PUT"])
+@app.route("/relay/update", methods=["PUT", "OPTIONS"])
 def relay():
-    data = request.get_json()
-    rsc = RelayStateControl()
-    r = rsc.getRelay(data["relayNumber"])
-    r.setRelayState(data["relayState"])
-    return jsonify({"updatedRelayState": (data["relayState"]), "success" : True}), 200
+    if request.method == "OPTIONS":
+        # Set the necessary headers for the preflight response
+        response_headers = {
+            "Access-Control-Allow-Origin": "*",  # or set your specific allowed origins
+            "Access-Control-Allow-Methods": "PUT",
+            "Access-Control-Allow-Headers": "Content-Type",
+            
+        }
+        return "", 200, response_headers
+    elif request.method == "PUT":
+        data = request.get_json()
+        rsc = RelayStateControl()
+        r = rsc.getRelay(int(data["relayNumber"]))
+        if r is not None:
+            r.setRelayState(data["relayState"])
+            return jsonify({"updatedRelayState": (data["relayState"]), "success" : True}), 200
+        else:
+            return jsonify({"updatedRelayState": (data["relayState"]), "success" : False}), 201
 
 
 # This function returns the relay state
