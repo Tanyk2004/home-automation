@@ -6,6 +6,7 @@ import bgpeaks from '../static/background/peaks-bg.svg'
 import { useState, useEffect } from 'react'
 // import backendURL from '../config';
 import { initializeApp } from "firebase/app";
+import backendURL from '../config'
 // import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -22,7 +23,17 @@ function Homepage() {
   // const analytics = getAnalytics(app);
 
   useEffect( ()=>{
-    fetch("", {})
+  //   fetch( `${`${backendURL}`}/relay/all` , {
+  //     method: 'GET',
+  //     headers: {
+  //         'Content-Type': 'application/json',
+  //         'ngrok-'
+  //     }
+  //   })
+  //   .then ( res => res.json())
+  //   .then ( data => {
+  //     console.log(data)
+  // })
   }, [])
 
   return (

@@ -16,18 +16,6 @@ function BaseCard(props: BaseCardProps) {
     const [status, setStatus] = useState(false)
     const [cardClass, setCardClass] = useState('off')
 
-
-    useEffect(() => {
-        console.log(status)
-        if ( status ) {
-
-        }
-        else {
-         
-        }
-        
-    }, [status])
-
     const handleOn = () => {
         setStatus(true)
         setCardClass('on')
