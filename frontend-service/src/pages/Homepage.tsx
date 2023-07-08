@@ -4,8 +4,23 @@ import '../styles/homepage.css'
 import '../styles/bgimage.css'
 import bgpeaks from '../static/background/peaks-bg.svg'
 import { useState, useEffect } from 'react'
-import backendURL from '../config';
+// import backendURL from '../config';
+import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBHkc0sPaq9aorqoKp0BaIv7kVARYRiY0Q",
+  authDomain: "homeauto-a855f.firebaseapp.com",
+  projectId: "homeauto-a855f",
+  storageBucket: "homeauto-a855f.appspot.com",
+  messagingSenderId: "611237202110",
+  appId: "1:611237202110:web:466d7f8e5454e68d2eb6ef",
+  measurementId: "G-D2LERSPS0R"
+};
 function Homepage() {
+  const app = initializeApp(firebaseConfig);
+  // const analytics = getAnalytics(app);
+
   useEffect( ()=>{
     fetch("", {})
   }, [])
