@@ -23,18 +23,18 @@ function Homepage() {
   const app = initializeApp(firebaseConfig);
   // const analytics = getAnalytics(app);
 
-  useEffect( ()=>{
-    fetch(`${backendURL}/relay/all`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
-  }, [])
+  // useEffect( ()=>{
+  //   fetch(`${backendURL}/relay/all`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //     });
+  // }, [])
 
   return (
     <div  style={{
