@@ -18,22 +18,22 @@ const firebaseConfig = {
   appId: "1:611237202110:web:466d7f8e5454e68d2eb6ef",
   measurementId: "G-D2LERSPS0R"
 };
+
 function Homepage() {
   const app = initializeApp(firebaseConfig);
   // const analytics = getAnalytics(app);
 
   useEffect( ()=>{
-  //   fetch( `${`${backendURL}`}/relay/all` , {
-  //     method: 'GET',
-  //     headers: {
-  //         'Content-Type': 'application/json',
-  //         'ngrok-'
-  //     }
-  //   })
-  //   .then ( res => res.json())
-  //   .then ( data => {
-  //     console.log(data)
-  // })
+    fetch(`${backendURL}/relay/all`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
   }, [])
 
   return (
