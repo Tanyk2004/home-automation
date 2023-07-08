@@ -47,6 +47,7 @@ class Relay:
         GPIO.output(self.relay_id, (GPIO.HIGH if self.is_on else GPIO.LOW))
 
 
+
 class RelayStateControl:
 
     """
@@ -154,6 +155,25 @@ class RelayStateControl:
         """
         return self.db.getAllRelays()
 
+    def updateRelay(self, id : int, state : bool) -> bool:
+        """
+        Updates the state of the relay and its value in the database
+
+        Args:
+            :param id of the relay that needs to be updated
+            :param state that the relay takes after the function is executed
+
+        Return:
+            :returns true if the relay was modified successfully
+
+        """
+        relay = self.getRelay(id)
+        if relay is not None:
+            # relay exists
+            relay.setRelayState(state)
+            self.db.updateRelayState(id, state)
+            return True
+        return False
 
 if __name__ == "__main__":
     rsc = RelayStateControl()

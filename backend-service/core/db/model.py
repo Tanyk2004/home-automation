@@ -100,7 +100,8 @@ class dbManager:
             :return list of all the relays in the database
         """
         self.c.execute(f"SELECT * FROM {dbManager.TABLE_NAME}")
-        return self.c.fetchall()
+        output = self.c.fetchall()
+        return output
 
 
 # if __name__ == "__main__":

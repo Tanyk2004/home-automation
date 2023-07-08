@@ -33,9 +33,9 @@ def relay():
     elif request.method == "PUT":
         data = request.get_json()
         rsc = RelayStateControl()
-        r = rsc.getRelay(int(data["relayNumber"]))
-        if r is not None:
-            r.setRelayState(data["relayState"])
+        
+        # Checking if relay actually exists
+        if rsc.updateRelay(data["relayNumber"], data["relayState"]):
             return jsonify({"updatedRelayState": (data["relayState"]), "success" : True}), 200
         else:
             return jsonify({"updatedRelayState": (data["relayState"]), "success" : False}), 201
