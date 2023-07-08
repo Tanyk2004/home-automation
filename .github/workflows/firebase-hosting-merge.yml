@@ -17,7 +17,7 @@ jobs:
       - run: echo "CI=false" >> $GITHUB_ENV
       - run: npm ci && npm run build
       - name: Deploy to Firebase Hosting
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           entryPoint: 'frontend-service'
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
