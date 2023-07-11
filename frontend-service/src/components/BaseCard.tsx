@@ -5,8 +5,7 @@ import backendURL from '../config';
 interface BaseCardProps {
     title: string;
     status?: boolean;
-    applicaneId?: string;
-    // todo: add applianceId based on which we can make api calls and get and put the status
+    applianceId?: number;
 
 }
 
@@ -15,32 +14,11 @@ const ON_COLOR = '#31FF3166'
 function BaseCard(props: BaseCardProps) {
 
     const [status, setStatus] = useState(false)
-    const [cardColor, setCardColor] = useState('#ffffffd4')
-
-    useEffect(() => {
-
-        setStatus(props.status || false)
-        if ( status ) {
-            setCardColor(ON_COLOR)
-        } else {
-            setCardColor('#ffffffd4')
-        }
-    },[])
-
-    useEffect(() => {
-        console.log(status)
-        if ( status ) {
-            document.documentElement.style.setProperty('--card-background-color', ON_COLOR)
-        }
-        else {
-            document.documentElement.style.setProperty('--card-background-color', '#FFFFFF66')
-        }
-        
-    }, [status])
+    const [cardClass, setCardClass] = useState('off')
 
     const handleOn = () => {
         setStatus(true)
-        setCardColor(ON_COLOR)
+        setCardClass('on')
 
         fetch( `${backendURL}/relay/update` , {
             method: 'PUT',
@@ -48,14 +26,16 @@ function BaseCard(props: BaseCardProps) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              relayNumber: '4',
+              relayNumber: props.applianceId,
               relayState: true
             })
           })
           .then ( res => res.json())
           .then ( data => {
             if(data["success"] == true) {console.log(data["updatedRelayState"])}
-            
+            else {
+                console.log(data)
+            }
         })
 
 
@@ -64,7 +44,7 @@ function BaseCard(props: BaseCardProps) {
     }
     const handleOff = () => {
         setStatus(false)
-        setCardColor('#ffffff')
+        setCardClass('off')
 
         
         fetch( `${backendURL}/relay/update` , {
@@ -73,7 +53,7 @@ function BaseCard(props: BaseCardProps) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              relayNumber: '4',
+              relayNumber: props.applianceId,
               relayState: false
             })
           })
@@ -88,7 +68,7 @@ function BaseCard(props: BaseCardProps) {
 
 
     return (
-        <div className="baseCardContainer on">
+        <div className={`baseCardContainer ${cardClass}`}>
             <h1 className='cardTitle'>{props.title}</h1>
             <div className="cardButtonContainer">
                 <button className='cardButton' id='onButton' onClick={handleOn}><h2>On</h2></button>
