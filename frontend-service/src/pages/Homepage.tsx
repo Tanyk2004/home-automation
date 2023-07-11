@@ -22,20 +22,24 @@ const firebaseConfig = {
 function Homepage() {
   const app = initializeApp(firebaseConfig);
   // const analytics = getAnalytics(app);
-
+  async function syncStates() {
+    fetch(`${backendURL}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        "ngrok-skip-browser-warning": "69420"
+      }
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
   // useEffect( ()=>{
-  //   fetch(`${backendURL}/relay/all`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //     });
+    
   // }, [])
 
+// TODO Look into something called an error boundary
   return (
     <div  style={{
       width: '100vw',
@@ -53,6 +57,7 @@ function Homepage() {
         <BaseCard title='Light 1' applianceId={22} />
         <BaseCard title='Light 2' applianceId={17} />
         <BaseCard title='Fan 1' applianceId={4} />
+        <button onClick={syncStates}>CLick ME</button>
       </div>
     </div>
   )
