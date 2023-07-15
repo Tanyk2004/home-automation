@@ -4,26 +4,21 @@ import '../styles/homepage.css'
 import '../styles/bgimage.css'
 import bgpeaks from '../static/background/peaks-bg.svg'
 import { useState, useEffect } from 'react'
-// import backendURL from '../config';
-import { initializeApp } from "firebase/app";
+import AudioUpload from '../components/AudioUpload'
 import backendURL from '../config'
-// import { getAnalytics } from "firebase/analytics";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBHkc0sPaq9aorqoKp0BaIv7kVARYRiY0Q",
-  authDomain: "homeauto-a855f.firebaseapp.com",
-  projectId: "homeauto-a855f",
-  storageBucket: "homeauto-a855f.appspot.com",
-  messagingSenderId: "611237202110",
-  appId: "1:611237202110:web:466d7f8e5454e68d2eb6ef",
-  measurementId: "G-D2LERSPS0R"
-};
-
+const relayIds = [
+  "Fan 1",
+  "Light 1",
+  "Light 2",
+  "Misc appliance",
+]
 function Homepage() {
-  const app = initializeApp(firebaseConfig);
+  // const app = initializeApp(firebaseConfig);
   // const analytics = getAnalytics(app);
+  const [relayStates, setRelayState] = useState([])
   async function syncStates() {
-    fetch(`${backendURL}/`, {
+    fetch(`${backendURL}/relay/all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -32,12 +27,18 @@ function Homepage() {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
+        setRelayState(data["relayState"]);
       });
   }
-  // useEffect( ()=>{
-    
-  // }, [])
+  useEffect( ()=>{
+    syncStates()
+
+    const timer = setInterval(syncStates, 3000)
+    return () => clearInterval(timer)
+  }, [])
+
+  useEffect(() => {
+  }, [relayStates])
 
 // TODO Look into something called an error boundary
   return (
@@ -54,10 +55,17 @@ function Homepage() {
       backgroundSize: 'cover',
     }}>
       <div className='cardContainer'>
-        <BaseCard title='Light 1' applianceId={22} />
-        <BaseCard title='Light 2' applianceId={17} />
-        <BaseCard title='Fan 1' applianceId={4} />
-        <button onClick={syncStates}>CLick ME</button>
+        {
+          relayStates.map((relay, index) => (
+            <BaseCard 
+              key={index}
+              title={`${relayIds[index]}`}
+              applianceId={relay[0]}
+              status={relay[1] === 1}
+            />
+          ))
+        }
+        <AudioUpload />
       </div>
     </div>
   )

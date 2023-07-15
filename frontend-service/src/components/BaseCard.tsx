@@ -3,18 +3,26 @@ import '../styles/components/basecard.css'
 import backendURL from '../config';
 
 interface BaseCardProps {
+    key: number;
     title: string;
     status?: boolean;
     applianceId?: number;
 
 }
 
-const ON_COLOR = '#31FF3166'
-
 function BaseCard(props: BaseCardProps) {
 
-    const [status, setStatus] = useState(false)
-    const [cardClass, setCardClass] = useState('off')
+    const [status, setStatus] = useState(props.status)
+    const [cardClass, setCardClass] = useState(status ? 'on' : 'off')
+
+    useEffect(() => {
+        console.log(props.status);
+        setStatus(props.status);
+      }, [props.status]);
+
+    useEffect(() => {
+        setCardClass(status ? 'on' : 'off')
+    }, [status])
 
     const handleOn = () => {
         setStatus(true)
