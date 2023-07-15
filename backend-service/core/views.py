@@ -3,20 +3,24 @@ from core import app
 from core.RelayControl import RelayStateControl, Relay
 from core.db.model import dbManager
 from flask_cors import cross_origin
+import base64
+from pydub import AudioSegment
+import pygame
+import os
 
-from flask import Response
 
 @app.before_request
 def before_request():
-  headers = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' }
+  headers = { 'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS', 
+              'Access-Control-Allow-Headers': 'Content-Type' }
+  
   if request.method == 'OPTIONS' or request.method == 'options':
     return jsonify(headers), 200
     
 def __init__(self):
-    print("relay state control created")
-    db = dbManager()
-    if ( not db.checkIfRelayExists(4)):
-        db.addRelay(4, False)
+    pygame.mixer.init()
+
 
 
 @app.route("/", methods=["GET"])
@@ -39,20 +43,6 @@ def relay():
         return jsonify({"updatedRelayState": (data["relayState"]), "success" : True}), 200
     else:
         return jsonify({"updatedRelayState": (data["relayState"]), "success" : False}), 201
-
-
-# @app.route("/relay/all", methods=["OPTIONS"])
-# def getRelayPreFlight():
-#     print("running options")
-#     if request.method == "OPTIONS":
-#         # Set the necessary headers for the preflight response
-#         response_headers = {
-#             "Access-Control-Allow-Origin": "*",  # or set your specific allowed origins
-#             "Access-Control-Allow-Methods": "GET, PUT, OPTIONS",
-#             "Access-Control-Allow-Headers": "Content-Type",
-#             "Acess-Control-Allow-Credentials":"true"
-#         }
-#         return "", 200, response_headers
 
 # This function returns the relay state
 @app.route("/relay/all", methods=["GET"])
@@ -84,6 +74,21 @@ def deleteRelay():
         return jsonify({"message" : "Relay doesn't exist" , "success" : False}), 200
     return jsonify({"message" : "Relay Deleted successfully" , "success" : True}), 200
 
+@app.route("/audio/play", methods = ["POST"])
+def playAudio():
+    data = request.get_json()
+    base64_string = data["audioData"]
+    # There is an error with conerting a base64 into a wav file
+    decoded_data = base64.b64decode(base64_string)
+    with open ('audio.wav', 'wb') as f:
+        f.write(decoded_data)
+    
+    os.remove('audio.wav')
+
+
+    if data is None:
+        return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 400
+    return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 200
 
 
 
