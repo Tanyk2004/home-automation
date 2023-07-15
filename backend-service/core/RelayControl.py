@@ -115,6 +115,8 @@ class RelayStateControl:
         for relay in self.relayContainer:
             if relay.getId() == id:
                 return relay
+        else:
+            raise ValueError("Relay Not Found")
 
     def removeRelay(self, id: int) -> Relay:
         """
@@ -127,14 +129,15 @@ class RelayStateControl:
             :returns -> the popped relay object
         """
         if not self.db.checkIfRelayExists(id):
-            return None
-        for relay, index in zip(self.relayContainer, range(len(self.relayContainer))):
-            if relay.getId() == id:
-                poppedRelay: Relay = relay
-                self.db.dropRelay(id)
-                self.relayContainer.pop(index)
-                poppedRelay.setRelayState(False)
-                return poppedRelay
+            raise ValueError("Relay does not exist")
+        else:
+            for relay, index in zip(self.relayContainer, range(len(self.relayContainer))):
+                if relay.getId() == id:
+                    poppedRelay: Relay = relay
+                    self.db.dropRelay(id)
+                    self.relayContainer.pop(index)
+                    poppedRelay.setRelayState(False)
+                    return poppedRelay
 
     def popRelay(self, index: int) -> Relay:
         """
