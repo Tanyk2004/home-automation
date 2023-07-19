@@ -52,7 +52,7 @@ function AudioUpload() {
                         width: '1em',
                        
                     }}>
-                        <input formEncType='multipart/form-data' className="audioInput" type="file" accept="audio/*" onChange={changeHandler} />
+                        <input formEncType='multipart/form-data' className="audioInput" type="file" accept="audio/wav" onChange={changeHandler} />
                     </div>
                     <div style={{
                         flex: 3,
