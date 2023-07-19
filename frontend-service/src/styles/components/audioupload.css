@@ -33,8 +33,19 @@
   }
 
   .audioInput{
-    margin: 0 1em;
-    padding: 2em 5em;
+    margin-left: 4em;
+    margin-right: 0em;
     border-radius: 1em;
     border: none;
+  }
+
+  .buttonAndProgressContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: visible;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 2em;
   }
