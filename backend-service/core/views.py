@@ -1,13 +1,10 @@
 from flask import jsonify, request
 from core import app
-from core.RelayControl import RelayStateControl, Relay
-from core.db.model import dbManager
+from core.RelayControl import RelayStateControl
 from flask_cors import cross_origin
-import base64
-from pydub import AudioSegment
-import pygame
 import os
-
+import wave, pyaudio
+import simpleaudio as sa
 
 @app.before_request
 def before_request():
@@ -18,8 +15,6 @@ def before_request():
   if request.method == 'OPTIONS' or request.method == 'options':
     return jsonify(headers), 200
     
-def __init__(self):
-    pygame.mixer.init()
 
 
 
@@ -76,19 +71,21 @@ def deleteRelay():
 
 @app.route("/audio/play", methods = ["POST"])
 def playAudio():
-    data = request.get_json()
-    base64_string = data["audioData"]
-    # There is an error with conerting a base64 into a wav file
-    decoded_data = base64.b64decode(base64_string)
-    with open ('audio.wav', 'wb') as f:
-        f.write(decoded_data)
+    data = request
+    audio_file = data.files.get('audio')
+    audio_file.save("audio.wav")
     
-    os.remove('audio.wav')
+    play_audio("audio.wav")
 
+    # os.remove("audio.wav")
 
     if data is None:
-        return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 400
+        return jsonify({"message" : "Sound upload failed", "success" : False}), 400
     return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 200
 
+def play_audio(file_path):
+    wave_obj = sa.WaveObject.from_wave_file(file_path)
+    play_obj = wave_obj.play()
+    play_obj.wait_done()
 
 
