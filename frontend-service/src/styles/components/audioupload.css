@@ -14,8 +14,12 @@
     align-items: stretch;
 }
 
+.audioTitle {
+  margin-botton: 2em;
+}
+
 .audioButton {
-    margin: 0 1em;
+    margin: 0 2em;
     padding: 2em 5em;
     border-radius: 1em;
     border: none;

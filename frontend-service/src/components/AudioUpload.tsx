@@ -45,12 +45,14 @@ function AudioUpload() {
     return (
         <>
             <div className='audioUploadCard'>
-                <h1 className='cardTitle'>Upload Audio (.wav)</h1>
+                <h1 className='cardTitle audioTitle'>Upload Audio (.wav)</h1>
                 <div className='buttonAndProgressContainer'>
                     <div style={{
+                        display: 'flex',
                         flex: 4,
                         width: '1em',
-                       
+                        height: '5em',
+                        alignItems: 'center',
                     }}>
                         <input formEncType='multipart/form-data' className="audioInput" type="file" accept="audio/wav" onChange={changeHandler} />
                     </div>
@@ -59,9 +61,18 @@ function AudioUpload() {
                         marginLeft: '5em',
                         marginRight: '1em',
                     }}>
-                        {loading && (<CircularProgress style={{
+                        {loading && (
+                            <div>
+                        <CircularProgress style={{
                             color: '#5d00ff88',
-                        }}/>)}
+                        }}/>
+                        <div>Audio Playing...</div>
+                        </div>
+                        
+                        )
+                        
+                        }
+                        
                         {Success &&
                             (<Typography style={{
                                 display: 'flex',
