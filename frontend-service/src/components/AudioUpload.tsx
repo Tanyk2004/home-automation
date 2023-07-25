@@ -45,7 +45,7 @@ function AudioUpload() {
     return (
         <>
             <div className='audioUploadCard'>
-                <h1 className='cardTitle'>Upload Audio</h1>
+                <h1 className='cardTitle'>Upload Audio (.wav)</h1>
                 <div className='buttonAndProgressContainer'>
                     <div style={{
                         flex: 4,
