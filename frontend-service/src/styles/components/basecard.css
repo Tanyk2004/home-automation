@@ -30,6 +30,14 @@
   }
 }
 
+.cardTitleon{
+  color: #0bff0088;
+}
+
+.cardTitleoff{
+  color: black;
+}
+
 .on{
   background-color: #5d00ff88;
 }
