@@ -1,52 +1,94 @@
 import React, { ChangeEvent, useState } from 'react'
 import backendURL from '../config';
 import '../styles/components/audioupload.css'
-
+import { CircularProgress } from '@mui/material';
+import Typography from '@mui/material/Typography';
 function AudioUpload() {
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
-
-    const handldedSelectedFile = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        setSelectedFile(file || null)
-    };
+    const [isFilePicked, setIsFilePicked] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
+    const [Success, setSuccess] = useState<boolean>(false)
+    const [failed, setFailed] = useState<boolean>(false)
+    const changeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+        setSelectedFile(event.target.files![0])
+        setIsFilePicked(true)
+    }
 
     const handleUpload = () => {
-        if (selectedFile) {
-            const reader = new FileReader()
+        setLoading(true)
+        setSuccess(false)
+        setFailed(false)
+        if (isFilePicked) {
+            const formData = new FormData()
+            formData.append('audio', selectedFile!)
+            fetch(`${backendURL}/audio/play`, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('Success:', result);
+                    setLoading(false)
+                    if (result["success"]) {
+                        setSuccess(true)
+                    } else {
+                        setFailed(true)
+                    }
 
-
-            reader.onload = (event) => {
-                const fileData = event.target?.result
-                const uintArray = new Uint8Array(fileData as ArrayBuffer)
-                const dataArray = Array.from(uintArray)
-                const base64Data = btoa(String.fromCharCode.apply(null, dataArray))
-
-                // call the function that uploads data to the backend here
-                fetch(`${backendURL}/audio/play`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'ngrok-skip-browser-warning': '69420',
-                    },
-                    body: JSON.stringify({
-                        audioData: base64Data,
-                    })
-                }).then(res => res.json())
-                    .then(data => {
-                        console.log(data)
-                    })
-
-            }
-            reader.readAsDataURL(selectedFile)
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         }
     }
     return (
         <>
             <div className='audioUploadCard'>
-                <h1 className='cardTitle'>Upload Audio</h1>
-                <input className="audioInput" type="file" accept="audio/*" onChange={handldedSelectedFile} />
-                <button className="audioButton" onClick={handleUpload}>Upload</button>
+                <h1 className='cardTitle audioTitle'>Upload Audio (.wav)</h1>
+                <div className='buttonAndProgressContainer'>
+                    <div style={{
+                        display: 'flex',
+                        flex: 4,
+                        width: '1em',
+                        height: '5em',
+                        alignItems: 'center',
+                    }}>
+                        <input formEncType='multipart/form-data' className="audioInput" type="file" accept="audio/wav" onChange={changeHandler} />
+                    </div>
+                    <div style={{
+                        flex: 3,
+                        marginLeft: '5em',
+                        marginRight: '1em',
+                    }}>
+                        {loading && (
+                            <div>
+                        <CircularProgress style={{
+                            color: '#5d00ff88',
+                        }}/>
+                        <div>Audio Playing...</div>
+                        </div>
+                        
+                        )
+                        
+                        }
+                        
+                        {Success &&
+                            (<Typography style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}variant='h6' fontStyle={"bold"}>
+                                Audio Played Successfully
+                            </Typography>
+                            )}
+                        {failed && (<Typography>
+                            Audio Failed to Play
+                        </Typography>)}
+
+                    </div>
+                </div>
+                <button className="audioButton" onClick={handleUpload}>Upload and Play</button>
+
             </div>
         </>
     )

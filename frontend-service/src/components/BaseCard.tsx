@@ -78,6 +78,7 @@ function BaseCard(props: BaseCardProps) {
     return (
         <div className={`baseCardContainer ${cardClass}`}>
             <h1 className='cardTitle'>{props.title}</h1>
+            <h2 className={`cardTitle cardTitle${cardClass}`}>Status: {status ? 'on' : 'off'} </h2>
             <div className="cardButtonContainer">
                 <button className='cardButton' id='onButton' onClick={handleOn}><h2>On</h2></button>
                 <button className='cardButton' id='offButton' onClick={handleOff}><h2>Off</h2></button>
