@@ -11,7 +11,7 @@
 
 @media ( max-width: 600px) {
   .baseCardContainer {
-    height: 20em;
+    height: 30em;
     width: 20em;
   }
 
@@ -20,9 +20,11 @@
   }
 
   .cardButton {
-    margin: 0 0.1em;
-    padding: 0.5em 1em;
+    margin: 0 0em;
+    padding: 0.1em 0.5em;
   }
+
+
 }
 
 .cardTitleon{
@@ -57,7 +59,7 @@
 
 .cardButton {
   margin: 0 1em;
-  padding: 2em 5em;
+  padding: 2em 4em;
   border-radius: 1em;
 }
 
