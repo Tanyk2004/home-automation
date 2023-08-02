@@ -19,7 +19,6 @@ function AudioUpload() {
             reader.onload = (event) => {
                 const fileData = event.target?.result
                 const uintArray = new Uint8Array(fileData as ArrayBuffer)
-                console.log("heyo")
                 const dataArray = Array.from(uintArray)
                 const base64Data = btoa(String.fromCharCode.apply(null, dataArray))
 

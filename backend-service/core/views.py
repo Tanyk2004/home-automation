@@ -23,10 +23,6 @@ def before_request():
 def index():
     return jsonify({"message": "Home Automation API is Running!"}), 200
 
-
-# TODO - if you want to embed a video stream on to the page as well try this https://chat.openai.com/share/e2f71f0e-06d5-45ca-8aa1-6070cd6fbe8f
-# TODO - add schema validation for requests
-
 # This function modifies the relay state
 
 @app.route("/relay/update", methods=["PUT"])
@@ -76,8 +72,6 @@ def playAudio():
     audio_file.save("audio.wav")
     
     play_audio("audio.wav")
-
-    # os.remove("audio.wav")
 
     if data is None:
         return jsonify({"message" : "Sound upload failed", "success" : False}), 400
