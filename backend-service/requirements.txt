@@ -13,3 +13,4 @@ pysqlite3==0.5.1
 pydub==0.25.1
 pygame==1.9.6
 pytube==15.0.0
+paho-mqtt==1.6.1

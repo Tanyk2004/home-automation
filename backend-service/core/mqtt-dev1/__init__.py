@@ -1,0 +1,1 @@
+print('mqtt protocol initialized.')

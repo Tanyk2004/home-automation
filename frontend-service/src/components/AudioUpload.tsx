@@ -55,7 +55,7 @@ function AudioUpload() {
                         alignItems: 'center',
                     }}>
                         <input formEncType='multipart/form-data' className="audioInput" type="file" accept="audio/wav" onChange={changeHandler} />
-                    </div>
+                    </div> 
                     <div style={{
                         flex: 3,
                         marginLeft: '5em',

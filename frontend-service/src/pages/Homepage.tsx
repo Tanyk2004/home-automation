@@ -5,6 +5,7 @@ import '../styles/bgimage.css'
 import bgpeaks from '../static/background/peaks-bg.svg'
 import { useState, useEffect } from 'react'
 import AudioUpload from '../components/AudioUpload'
+import YoutubePlay from '../components/YoutubePlay'
 import backendURL from '../config'
 
 const relayIds = [
@@ -66,6 +67,7 @@ function Homepage() {
           ))
         }
         <AudioUpload />
+        <YoutubePlay title="Play Audio From Youtube"/>
       </div>
     </div>
   )
