@@ -5,18 +5,16 @@
 - The purpose of this project is to allow the user to access their room and all its appliances on the Internet. The front end allows the user to easily control the relays that are connected to different appliances.
 - This is also an introductory project designed to be the center for a curriculum for ECLAIR members who choose to be a part of the beginner's track
 
-## Todo
 
-- Make a feature that lets you find esp devices on your local network and connect to them as appliances.
-- Embed video stream
-- Add functionality to record and upload audio files
+## Backend
 
-## Classes
+- Lets user add appliances
+- Lets user change the state of appliances
+- Lets user stream audio using a .wav file or a youtube video link
 
-- Relay Class
-    * Allows the User to create a relay object and maintain its ID and state
+## Frontend
 
-- Relay State Control
-    * Allows the user to maintain an array of relays that they can control 
+- Contains cards for each appliance that allow user to change the state of an appliance
+- Contains cards for Youtube Audio inks and .wav audio files
 
 
