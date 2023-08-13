@@ -15,11 +15,18 @@ def play_youtube_video(video_url : str) -> None:
 
     # Create a Youtube Object
     yt = YouTube(video_url)
+    
+    # receives a stream link for just the audio
     audio_stream = yt.streams.get_audio_only()
     play_video_from_link(audio_stream.url)
 
 
-def play_video_from_link(video_link):
+def play_video_from_link(video_link : str):
+    """
+    Accepts a vlc stream link and streams audio to default audio output device
+    
+    :param video_link video_link: VLC stream link to play audio 
+    """
     try:
         # Create a VLC instance
         vlc_instance = vlc.Instance()
