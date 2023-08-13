@@ -2,7 +2,7 @@ from pytube import YouTube
 import vlc
 import time
 
-LENGTH = 15
+LENGTH = 120
 
 
 def play_youtube_video(video_url : str) -> None:
@@ -33,7 +33,6 @@ def play_video_from_link(video_link):
         # Set the media for the media player
         media_player.set_media(media)
         start_time = time.time()
-        # Play the video
         media_player.play()
 
         # Wait for the player to finish playing
