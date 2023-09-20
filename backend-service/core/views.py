@@ -2,9 +2,8 @@ from flask import jsonify, request
 from core import app
 from core.RelayControl import RelayStateControl
 from flask_cors import cross_origin
-import os
-import wave, pyaudio
 import simpleaudio as sa
+from core.yt.YoutubeAudio import play_youtube_video
 
 @app.before_request
 def before_request():
@@ -15,8 +14,6 @@ def before_request():
   if request.method == 'OPTIONS' or request.method == 'options':
     return jsonify(headers), 200
     
-
-
 
 @app.route("/", methods=["GET"])
 @cross_origin()
@@ -76,6 +73,15 @@ def playAudio():
     if data is None:
         return jsonify({"message" : "Sound upload failed", "success" : False}), 400
     return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 200
+
+@app.route("/audio/yt", methods=["GET"])
+def playAudioYt():
+    link = request.args.get("link")
+    try:
+        play_youtube_video(link)
+        return jsonify({"message" : "Sound uploaded successfully", "success" : True}), 200
+    except:
+        return jsonify({"message" : "Sound uploaded successfully", "success" : False}), 400
 
 def play_audio(file_path):
     wave_obj = sa.WaveObject.from_wave_file(file_path)
