@@ -8,6 +8,21 @@
   grid-gap: 1em;
   overflow: auto;
 }
+
+.skeletonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  height: 28em;
+  width: 28em;
+  margin: 2em;
+  padding: 1em;
+  align-items: flex-start;  
+  justify-content: center;
+  border-radius: 2em;
+  box-shadow: 3px 2px 10px 5px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(3px);
+}
 @media (max-width: 1500px) {
   .cardContainer {
     grid-template-columns: 1fr 1fr;

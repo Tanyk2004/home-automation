@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import AudioUpload from '../components/AudioUpload'
 import YoutubePlay from '../components/YoutubePlay'
 import backendURL from '../config'
+import { Skeleton } from '@mui/material';
 
 const relayIds = [
   "Fan 1",
@@ -18,6 +19,7 @@ function Homepage() {
   // const app = initializeApp(firebaseConfig);
   // const analytics = getAnalytics(app);
   const [relayStates, setRelayState] = useState([])
+  const [backendUp, setBackendUp] = useState(false)
   async function syncStates() {
     fetch(`${backendURL}/relay/all`, {
       method: 'GET',
@@ -28,7 +30,14 @@ function Homepage() {
     })
       .then(res => res.json())
       .then(data => {
+        setBackendUp(true)
         setRelayState(data["relayState"]);
+      })
+      .catch((err) => {
+        console.log(err);
+        setBackendUp(false)
+        console.log("Backend is down")
+
       });
   }
   useEffect( ()=>{
@@ -57,14 +66,20 @@ function Homepage() {
     }}>
       <div className='cardContainer'>
         {
-          relayStates.map((relay, index) => (
+          backendUp ? relayStates.map((relay, index) => (
             <BaseCard 
               key={index}
               title={`${relayIds[index]}`}
               applianceId={relay[0]}
               status={relay[1] === 1}
             />
-          ))
+          )) : <div className='skeletonContainer'>
+            <div></div>
+            <Skeleton animation="wave" variant="rounded" width={450} height={60} />
+            <Skeleton animation="wave" variant="rounded" width={80} height={70} />
+            <Skeleton animation="wave" variant="rounded" width={450} height={100} />
+            </div>
+          
         }
         <AudioUpload />
         <YoutubePlay title="Play Audio From Youtube"/>
